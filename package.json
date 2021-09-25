@@ -1,14 +1,17 @@
 {
-  "name": "liz-yoga-enquiry-producer-lambda",
+  "name": "liz-yoga-enquiry-service-lambda",
   "version": "0.1.0",
   "bin": {
-    "liz-yoga-enquiry-producer-lambda": "bin/liz-yoga-enquiry-producer-lambda.js"
+    "liz-yoga-enquiry-service-lambda": "bin/liz-yoga-enquiry-service-lambda.js"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "synth": "npm run build && cdk synth --profile dusan",
+    "deploy": "npm run build && cdk deploy --profile dusan",
+    "synth-local": "npm run build && cdk synth --no-staging > template.yaml --profile dusan",
+    "invoke": "sam local invoke EnquiryServiceEnquiryServiceHandler0276F4DB -e test/stub/enquiryPayload.json --profile dusan"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.123.0",
