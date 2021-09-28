@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda"
 import {EnquiryService} from "./EnquiryService";
 
 exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+
     console.log(`consuming ${JSON.stringify(event)}`)
 
     if(event.httpMethod === 'POST' && event.body){
@@ -18,7 +19,12 @@ exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResul
         const respEntity = new EnquiryService().processEnquiry(reqBody)
         return {
             statusCode: 200,
-            body: JSON.stringify(respEntity)
+            body: JSON.stringify(respEntity),
+            headers: {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'
+            }
         }
     } catch (e) {
         return {

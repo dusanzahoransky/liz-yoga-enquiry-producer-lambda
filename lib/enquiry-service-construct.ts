@@ -22,7 +22,11 @@ export class EnquiryServiceConstruct extends core.Construct {
 
         const api = new apigateway.RestApi(this, "enquiry-api", {
             restApiName: "Enquiry Service",
-            description: "Yoga Classes Enquiry Service."
+            description: "Yoga Classes Enquiry Service.",
+            defaultCorsPreflightOptions: {
+                allowOrigins: apigateway.Cors.ALL_ORIGINS,
+                allowMethods: apigateway.Cors.ALL_METHODS
+            }
         });
 
         const getEnquiryIntegration = new apigateway.LambdaIntegration(handler, {

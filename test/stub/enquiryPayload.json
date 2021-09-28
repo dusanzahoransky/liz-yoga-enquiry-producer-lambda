@@ -1,3 +1,15 @@
 {
-  "test": "foo"
+  "resource": "/",
+  "path": "/",
+  "httpMethod": "POST",
+  "requestContext": {
+    "resourcePath": "/",
+    "httpMethod": "POST",
+    "path": "/Prod/"
+  },
+  "headers": {
+    "accept": "application/json",
+    "content-type": "application/json"
+  },
+  "body": "{\"name\":\"Dusan\",\"email\":\"dusan@test.com\",\"mobile\":\"048123456\",\"preferredTime\":\"6 PM\",\"enquiry\":\"bla\"}"
 }

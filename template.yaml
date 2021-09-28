@@ -57,7 +57,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53S3Bucket07CDFC72
+          Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3Bucket340EB19C
         S3Key:
           Fn::Join:
             - ""
@@ -65,12 +65,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53S3VersionKey6B4450B9
+                      - Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53S3VersionKey6B4450B9
+                      - Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97
       Role:
         Fn::GetAtt:
           - EnquiryServiceEnquiryServiceHandlerServiceRole26F2DF79
@@ -124,13 +124,14 @@ Resources:
       - EnquiryServiceenquiryapiD190EB4C
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/Account
-  EnquiryServiceenquiryapiDeployment1EB14AF87ae81f13e07f30825bd29b7776cd801c:
+  EnquiryServiceenquiryapiDeployment1EB14AF8236aac6e550a10680f8afb9b9105b460:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
         Ref: EnquiryServiceenquiryapiD190EB4C
       Description: Automatically created by the RestApi construct
     DependsOn:
+      - EnquiryServiceenquiryapiOPTIONS8A12D97E
       - EnquiryServiceenquiryapiPOST2411211D
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/Deployment/Resource
@@ -140,10 +141,39 @@ Resources:
       RestApiId:
         Ref: EnquiryServiceenquiryapiD190EB4C
       DeploymentId:
-        Ref: EnquiryServiceenquiryapiDeployment1EB14AF87ae81f13e07f30825bd29b7776cd801c
+        Ref: EnquiryServiceenquiryapiDeployment1EB14AF8236aac6e550a10680f8afb9b9105b460
       StageName: prod
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/DeploymentStage.prod/Resource
+  EnquiryServiceenquiryapiOPTIONS8A12D97E:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Fn::GetAtt:
+          - EnquiryServiceenquiryapiD190EB4C
+          - RootResourceId
+      RestApiId:
+        Ref: EnquiryServiceenquiryapiD190EB4C
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/Default/OPTIONS/Resource
   EnquiryServiceenquiryapiPOSTApiPermissionLizYogaEnquiryServiceLambdaStackEnquiryServiceenquiryapiFBB13466POST6A5114F8:
     Type: AWS::Lambda::Permission
     Properties:
@@ -244,15 +274,15 @@ Outputs:
           - Ref: EnquiryServiceenquiryapiDeploymentStageprod82434FBD
           - /
 Parameters:
-  AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53S3Bucket07CDFC72:
+  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3Bucket340EB19C:
     Type: String
-    Description: S3 bucket for asset "6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53"
-  AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53S3VersionKey6B4450B9:
+    Description: S3 bucket for asset "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
+  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97:
     Type: String
-    Description: S3 key for asset version "6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53"
-  AssetParameters6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53ArtifactHash014185D3:
+    Description: S3 key for asset version "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
+  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0ArtifactHashEC1C6143:
     Type: String
-    Description: Artifact hash for asset "6e5dcd7ff8974b41482c8521e53c31f7322089bf878e83f2cfbe9bb2ff6acc53"
+    Description: Artifact hash for asset "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
 Conditions:
   CDKMetadataAvailable:
     Fn::Or:

@@ -11,7 +11,7 @@
     "synth": "npm run build && cdk synth --profile dusan",
     "deploy": "npm run build && cdk deploy --profile dusan",
     "synth-local": "npm run build && cdk synth --no-staging > template.yaml --profile dusan",
-    "invoke": "sam local invoke EnquiryServiceEnquiryServiceHandler0276F4DB -e test/stub/enquiryPayload.json --profile dusan"
+    "invoke": "npm run synth-local && sam local invoke EnquiryServiceEnquiryServiceHandler0276F4DB -e test/stub/enquiryPayload.json --profile dusan"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.123.0",
