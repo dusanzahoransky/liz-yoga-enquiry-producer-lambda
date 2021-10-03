@@ -5,6 +5,24 @@ Resources:
     DeletionPolicy: Retain
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/EnquiryService/Resource
+  EnquiryServiceEnquiryFD0DB52E:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      KeySchema:
+        - AttributeName: partitionKey
+          KeyType: HASH
+        - AttributeName: sortKey
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: partitionKey
+          AttributeType: S
+        - AttributeName: sortKey
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/Enquiry/Resource
   EnquiryServiceEnquiryServiceHandlerServiceRole26F2DF79:
     Type: AWS::IAM::Role
     Properties:
@@ -46,6 +64,13 @@ Resources:
                         - EnquiryService0AAA7EF4
                         - Arn
                     - /*
+          - Action: dynamodb:*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - EnquiryServiceEnquiryFD0DB52E
+                  - Arn
+              - Ref: AWS::NoValue
         Version: "2012-10-17"
       PolicyName: EnquiryServiceEnquiryServiceHandlerServiceRoleDefaultPolicy343A6E0E
       Roles:
@@ -57,7 +82,7 @@ Resources:
     Properties:
       Code:
         S3Bucket:
-          Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3Bucket340EB19C
+          Ref: AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889S3BucketB08A0E78
         S3Key:
           Fn::Join:
             - ""
@@ -65,12 +90,12 @@ Resources:
                   - 0
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97
+                      - Ref: AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889S3VersionKey781949A3
               - Fn::Select:
                   - 1
                   - Fn::Split:
                       - "||"
-                      - Ref: AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97
+                      - Ref: AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889S3VersionKey781949A3
       Role:
         Fn::GetAtt:
           - EnquiryServiceEnquiryServiceHandlerServiceRole26F2DF79
@@ -79,6 +104,8 @@ Resources:
         Variables:
           BUCKET:
             Ref: EnquiryService0AAA7EF4
+          ENQUIRY_TABLE:
+            Ref: EnquiryServiceEnquiryFD0DB52E
       Handler: EnquiryServiceHandler.main
       Runtime: nodejs14.x
     DependsOn:
@@ -91,8 +118,8 @@ Resources:
   EnquiryServiceenquiryapiD190EB4C:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Description: Yoga Classes Enquiry Service.
-      Name: Enquiry Service
+      Description: Yoga Classes EnquiryDto Service.
+      Name: EnquiryDto Service
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/Resource
   EnquiryServiceenquiryapiCloudWatchRole28E2C394:
@@ -124,7 +151,7 @@ Resources:
       - EnquiryServiceenquiryapiD190EB4C
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/Account
-  EnquiryServiceenquiryapiDeployment1EB14AF8236aac6e550a10680f8afb9b9105b460:
+  EnquiryServiceenquiryapiDeployment1EB14AF810870b747d5512ec6d89d614d7efb619:
     Type: AWS::ApiGateway::Deployment
     Properties:
       RestApiId:
@@ -141,7 +168,7 @@ Resources:
       RestApiId:
         Ref: EnquiryServiceenquiryapiD190EB4C
       DeploymentId:
-        Ref: EnquiryServiceenquiryapiDeployment1EB14AF8236aac6e550a10680f8afb9b9105b460
+        Ref: EnquiryServiceenquiryapiDeployment1EB14AF810870b747d5512ec6d89d614d7efb619
       StageName: prod
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/EnquiryService/enquiry-api/DeploymentStage.prod/Resource
@@ -255,7 +282,7 @@ Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Analytics: v2:deflate64:H4sIAAAAAAAA/02Q0W6DMAxFv6XvIR0g7Xm0U9+mIfYFXvBYCklQ7KxCEf8+ElqpTz5OfH1vUsqyquXL4Q1uVKh+PEblPMr4xaBGcXaW2AfFoiFC3g4HbQdx/rGfgefAiVrwYJDRp6ZDcsErTLyJe83a2VWk5ZFqGU9BjZhld9rLCQhXMYH57kHGS7Aq6dLYM7fojSbKGzUYGTs3ZadcWzdpteS5TKuguoAUm2ROL2DWAzDeYNmkSNzM+p75gY1SLlgW7zhPbjFoc9SnLv1Attzh8dyUX3wg/7o+Xe60rquwrkd5peNfWcmqkq+HK2ld+M1DG5TdXv8BtjSRe4QBAAA=
+      Analytics: v2:deflate64:H4sIAAAAAAAA/02Q3U7DMAyFn2X3WUZbwTXbEHeIavACXmJK1iap4oSpivLuNOkGvfJn2cc/p+Kxqhv+sHmGK22F7HfCOuTxw4Po2dEa8i4Iz45fpgUHGj26nJyQbHACM89dUnllTWJV/bieFTNEang8BNFjGXOjJRyAMDE5GdBWnnn8hPNQZhZIbAB9lsDjazAib8ilNbfotCIquxVoHk920ZfY2kGJqfQVSoyaLRChJ77PgcGoOvB4hWmWIvn9qG7f3XEvhA3GsxccBztpNOWJVTY71ZWVC9yNyZ+xN/TfVubiQimxxd5/Y/+MLAflGcp0WfEe/Bh8miXGSuQX2v1UNa9r/rS5kFJbN1+lNPLTEn8Bj6XMqckBAAA=
     Metadata:
       aws:cdk:path: LizYogaEnquiryServiceLambdaStack/CDKMetadata/Default
     Condition: CDKMetadataAvailable
@@ -274,15 +301,15 @@ Outputs:
           - Ref: EnquiryServiceenquiryapiDeploymentStageprod82434FBD
           - /
 Parameters:
-  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3Bucket340EB19C:
+  AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889S3BucketB08A0E78:
     Type: String
-    Description: S3 bucket for asset "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
-  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0S3VersionKey9F26DB97:
+    Description: S3 bucket for asset "15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889"
+  AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889S3VersionKey781949A3:
     Type: String
-    Description: S3 key for asset version "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
-  AssetParameterseb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0ArtifactHashEC1C6143:
+    Description: S3 key for asset version "15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889"
+  AssetParameters15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889ArtifactHashBBD4E718:
     Type: String
-    Description: Artifact hash for asset "eb979a3904f76a5219e1e926e5bd29414982bfa626aad2af3850d500b66f1df0"
+    Description: Artifact hash for asset "15179a94b32219d06b4922bd3d3e09a20ce5bfb910754c85d3d1dcf87c8b8889"
 Conditions:
   CDKMetadataAvailable:
     Fn::Or:

@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda"
 import {EnquiryService} from "./EnquiryService";
+import {EnquiryDto} from "./EnquiryDto";
 
 exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
@@ -15,8 +16,8 @@ exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResul
     }
 
     try {
-        const reqBody = JSON.parse(event.body)
-        const respEntity = new EnquiryService().processEnquiry(reqBody)
+        const reqBody = JSON.parse(event.body) as EnquiryDto
+        const respEntity = await new EnquiryService().processEnquiry(reqBody)
         return {
             statusCode: 200,
             body: JSON.stringify(respEntity),
@@ -27,6 +28,7 @@ exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResul
             }
         }
     } catch (e) {
+        console.log(e)
         return {
             statusCode: 500,
             body: `Failed to process enquiry: ${e.message}`
