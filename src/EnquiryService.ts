@@ -25,7 +25,7 @@ export class EnquiryService {
         };
         await dynamoDb.put(putItemReq).promise()
 
-        return enquiryTable
+        return enquiry
     }
 
     private static getEnquiryTable(): string{
