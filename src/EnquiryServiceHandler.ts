@@ -28,7 +28,7 @@ exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResul
             }
         }
     } catch (e) {
-        console.log(e)
+        console.log(e, e.stack)
         return {
             statusCode: 500,
             body: `Failed to process enquiry: ${e.message}`

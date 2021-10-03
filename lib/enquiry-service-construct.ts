@@ -3,6 +3,7 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import {StreamViewType} from '@aws-cdk/aws-dynamodb';
 
 export class EnquiryServiceConstruct extends core.Construct {
     constructor(scope: core.Construct, id: string) {
@@ -14,7 +15,8 @@ export class EnquiryServiceConstruct extends core.Construct {
             tableName: 'Enquiry',
             partitionKey: { name: 'partitionKey', type: dynamodb.AttributeType.STRING },
             sortKey: { name: 'sortKey', type: dynamodb.AttributeType.STRING },
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST
+            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+            stream: StreamViewType.NEW_IMAGE
         });
 
         const handler = new lambda.Function(this, "EnquiryServiceHandler", {

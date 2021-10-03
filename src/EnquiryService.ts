@@ -10,8 +10,8 @@ export class EnquiryService {
         const dynamoDb = new AWS.DynamoDB.DocumentClient( {region: 'ap-southeast-2'} );
 
         const now = new Date()
-        const partitionKey = EnquiryService.createPartitionKey(now);
-        const sortKey = EnquiryService.createSortKey(now, enquiryDto.mobile);
+        const partitionKey = EnquiryService.toPartitionKey(now);
+        const sortKey = EnquiryService.toSortKey(now, enquiryDto.mobile);
 
         const enquiry: Enquiry = {
             partitionKey,
@@ -36,11 +36,11 @@ export class EnquiryService {
         return enquiryTable
     }
 
-    private static createPartitionKey(now: Date) {
+    private static toPartitionKey(now: Date) {
         return now.toISOString().slice(0, 10);  //iso date part 2020-10-03
     }
 
-    private static createSortKey(now: Date, mobile: string) {
+    private static toSortKey(now: Date, mobile: string) {
         const isoTimePart = now.toISOString().slice(11, 19); //iso date part 09:12:28
         return isoTimePart + '_' + mobile;
     }
