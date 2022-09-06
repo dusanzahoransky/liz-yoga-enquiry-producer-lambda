@@ -28,10 +28,11 @@ exports.main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResul
             }
         }
     } catch (e) {
-        console.log(e, e.stack)
+        let error = e as Error;
+        console.log(e, error.stack)
         return {
             statusCode: 500,
-            body: `Failed to process enquiry: ${e.message}`
+            body: `Failed to process enquiry: ${error.message}`
         }
     }
 }
