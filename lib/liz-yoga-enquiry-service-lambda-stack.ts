@@ -1,8 +1,9 @@
-import * as cdk from '@aws-cdk/core';
 import {EnquiryServiceConstruct} from "./enquiry-service-construct";
+import {Stack, StackProps} from "aws-cdk-lib";
+import {Construct} from "constructs";
 
-export class LizYogaEnquiryServiceLambdaStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class LizYogaEnquiryServiceLambdaStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     new EnquiryServiceConstruct(this, 'EnquiryService')
   }

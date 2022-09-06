@@ -1,27 +1,24 @@
-import * as core from "@aws-cdk/core";
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import {StreamViewType} from '@aws-cdk/aws-dynamodb';
+import {Construct} from "constructs";
+import {aws_apigateway, aws_dynamodb, aws_lambda, aws_s3} from "aws-cdk-lib";
+import {StreamViewType} from "aws-cdk-lib/aws-dynamodb";
 
-export class EnquiryServiceConstruct extends core.Construct {
-    constructor(scope: core.Construct, id: string) {
+export class EnquiryServiceConstruct extends Construct {
+    constructor(scope: Construct, id: string) {
         super(scope, id);
 
-        const bucket = new s3.Bucket(this, "EnquiryService");
+        const bucket = new aws_s3.Bucket(this, "EnquiryService");
 
-        const enquiryTable = new dynamodb.Table(this, 'Enquiry', {
+        const enquiryTable = new aws_dynamodb.Table(this, 'Enquiry', {
             tableName: 'Enquiry',
-            partitionKey: { name: 'partitionKey', type: dynamodb.AttributeType.STRING },
-            sortKey: { name: 'sortKey', type: dynamodb.AttributeType.STRING },
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+            partitionKey: { name: 'partitionKey', type: aws_dynamodb.AttributeType.STRING },
+            sortKey: { name: 'sortKey', type: aws_dynamodb.AttributeType.STRING },
+            billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
             stream: StreamViewType.NEW_IMAGE
         });
 
-        const handler = new lambda.Function(this, "EnquiryServiceHandler", {
-            runtime: lambda.Runtime.NODEJS_14_X,
-            code: lambda.Code.fromAsset("src"),
+        const handler = new aws_lambda.Function(this, "EnquiryServiceHandler", {
+            runtime: aws_lambda.Runtime.NODEJS_14_X,
+            code: aws_lambda.Code.fromAsset("src"),
             handler: "EnquiryServiceHandler.main",
             environment: {
                 BUCKET: bucket.bucketName,
@@ -31,16 +28,16 @@ export class EnquiryServiceConstruct extends core.Construct {
 
         bucket.grantReadWrite(handler);
 
-        const api = new apigateway.RestApi(this, "enquiry-api", {
+        const api = new aws_apigateway.RestApi(this, "enquiry-api", {
             restApiName: "EnquiryDto Service",
             description: "Yoga Classes EnquiryDto Service.",
             defaultCorsPreflightOptions: {
-                allowOrigins: apigateway.Cors.ALL_ORIGINS,
-                allowMethods: apigateway.Cors.ALL_METHODS
+                allowOrigins: aws_apigateway.Cors.ALL_ORIGINS,
+                allowMethods: aws_apigateway.Cors.ALL_METHODS
             }
         });
 
-        const getEnquiryIntegration = new apigateway.LambdaIntegration(handler, {
+        const getEnquiryIntegration = new aws_apigateway.LambdaIntegration(handler, {
             requestTemplates: { "application/json": '{ "statusCode": "200" }' }
         });
 

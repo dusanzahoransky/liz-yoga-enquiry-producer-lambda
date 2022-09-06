@@ -1,13 +1,15 @@
-import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
 import * as LizYogaEnquiryServiceLambda from '../lib/liz-yoga-enquiry-service-lambda-stack';
+import {Template} from "aws-cdk-lib/assertions";
+import {App} from "aws-cdk-lib";
 
-test('Empty Stack', () => {
-    const app = new cdk.App();
+test('Stack with Lambda', () => {
+    const app = new App();
     // WHEN
     const stack = new LizYogaEnquiryServiceLambda.LizYogaEnquiryServiceLambdaStack(app, 'MyTestStack');
     // THEN
-    expectCDK(stack).to(matchTemplate({
-      "Resources": {}
-    }, MatchStyle.EXACT))
+    const template = Template.fromStack(stack);
+    template.resourceCountIs('AWS::Lambda::Function', 1)
 });
+
+
+
